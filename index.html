@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm2Future 3D – Solar Processing Unit</title>
+    <meta name="description"
+        content="Farm2Future 3D – A solar-powered walkthrough showing how raw chilli becomes market-ready chilli powder in a rural smart processing unit.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Tween.js for camera animations -->
+    <script src="https://unpkg.com/@tweenjs/tween.js@23.1.1/dist/tween.umd.js"></script>
+    <!-- Import map for Three.js -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader-wrap">
+            <div class="loader"></div>
+            <p class="loader-title">Farm2Future 3D</p>
+            <p class="loader-sub">Loading 3D Processing Unit…</p>
+        </div>
+        <p id="file-protocol-warning" class="file-warning" style="display: none;">
+            You opened this as a file. Run <strong>start-server.bat</strong> in this folder, then open the link that
+            appears.
+        </p>
+        <p id="load-error-msg" class="load-error" style="display: none;"></p>
+    </div>
+
+    <!-- Main UI Overlay -->
+    <div id="ui-container">
+
+        <!-- Top header -->
+        <header class="header">
+            <div class="header-badge">☀️ Solar Powered</div>
+            <h1>Farm<span class="accent">2</span>Future</h1>
+            <p class="subtitle">Solar-Powered Smart Processing Unit</p>
+        </header>
+
+        <!-- Side panel: Process stages -->
+        <div class="info-panel" id="infoPanel">
+            <h2>Process Stages</h2>
+            <ul class="steps">
+                <li id="step1" class="step">
+                    <span class="step-icon">🌶</span>
+                    <span class="step-text"><strong>1. Raw Storage</strong><br><small>Floating chilli
+                            basket</small></span>
+                </li>
+                <li id="step2" class="step">
+                    <span class="step-icon">⚙</span>
+                    <span class="step-text"><strong>2. Grinder Machine</strong><br><small>High-speed
+                            crushing</small></span>
+                </li>
+                <li id="step3" class="step">
+                    <span class="step-icon">☁</span>
+                    <span class="step-text"><strong>3. Powder Output</strong><br><small>Fine chilli
+                            powder</small></span>
+                </li>
+                <li id="step4" class="step">
+                    <span class="step-icon">📦</span>
+                    <span class="step-text"><strong>4. Packaging Zone</strong><br><small>Sealed &
+                            labelled</small></span>
+                </li>
+                <li id="step5" class="step">
+                    <span class="step-icon">🛍</span>
+                    <span class="step-text"><strong>5. Final Product</strong><br><small>Market-ready
+                            packet</small></span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Bottom controls hint -->
+        <div class="controls-hint">
+            <span>🖱 Drag to orbit</span>
+            <span>🔍 Scroll to zoom</span>
+            <span>☀️ Solar Powered</span>
+        </div>
+
+        <!-- CTA Button -->
+        <button id="startJourneyBtn" class="cta-button">▶ Start Guided Walkthrough</button>
+
+        <!-- Info tag bottom-right -->
+        <div class="tagline">
+            Visualize Your Future Product
+        </div>
+
+    </div>
+
+    <!-- 3D Canvas container -->
+    <div id="canvas-container"></div>
+
+    <script>
+        (function () {
+            if (window.location.protocol === 'file:') {
+                document.getElementById('file-protocol-warning').style.display = 'block';
+            }
+            window.runFarm2Future = function () {
+                var ls = document.getElementById('loading-screen');
+                ls.style.opacity = '0';
+                ls.style.transition = 'opacity 1s ease';
+                setTimeout(function () { ls.style.pointerEvents = 'none'; }, 1000);
+            };
+            window.showLoadError = function (msg) {
+                document.querySelector('#loading-screen .loader').style.display = 'none';
+                if (window.location.protocol !== 'file:') {
+                    document.getElementById('file-protocol-warning').style.display = 'none';
+                }
+                var errEl = document.getElementById('load-error-msg');
+                errEl.textContent = msg || 'Failed to load 3D. Run start-server.bat in this folder.';
+                errEl.style.display = 'block';
+            };
+        })();
+    </script>
+    <script type="module">
+        import('./main.js').then(function (m) { m.run(); }).catch(function (e) {
+            if (typeof window.showLoadError === 'function') {
+                window.showLoadError(e && e.message ? e.message : 'Could not load 3D. Run start-server.bat in this folder.');
+            }
+        });
+    </script>
+</body>
+
+</html>
